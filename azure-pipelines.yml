@@ -41,9 +41,17 @@ steps:
 - script: |
     docker login -u $(dockerHubUsername) -p $(dockerHubPassword)
     current_version=$(docker images $(dockerHubImageName) --format "{{.Tag}}" | grep -E "^v[0-9]+" | sort -r | head -n 1 | sed 's/v//')
-    next_version=$((current_version + 1))
+    
+    if [ -z "$current_version" ]; then
+        next_version=1
+    else
+        next_version=$((current_version + 1))
+    fi
+
     echo "##vso[task.setvariable variable=nextVersion;]v$next_version"
+    echo "Next version: v$next_version"
   displayName: 'Determine next version tag'
+
 
 # Step 6: Build Docker image with next version
 - task: Docker@2
