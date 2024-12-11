@@ -47,7 +47,7 @@ steps:
     repository: '$(dockerHubImageName)'
     Dockerfile: 'HelloWorld/Dockerfile'
     tags: |
-      $(tag)  # Use Build.BuildId as the tag
+      $(tag)  
 
 # Step 6: Push Docker image with Build.BuildId as tag
 - task: Docker@2
@@ -56,4 +56,4 @@ steps:
     command: 'push'
     repository: '$(dockerHubImageName)'
     tags: |
-      $(tag)  # Use Build.BuildId as the tag
+      $(tag)  
