@@ -9,7 +9,9 @@ resources:
 - repo: self
 
 variables:
-- group: ImagePush
+  - group: ImagePush
+  - name: tag
+    value: '$(Build.BuildId)'
 
 steps:
 # Step 1: Checkout the code
@@ -37,37 +39,21 @@ steps:
   workingDirectory: HelloWorld
   displayName: 'Publish application'
 
-# Step 5: Get the next version tag
-- script: |
-    docker login -u $(dockerHubUsername) -p $(dockerHubPassword)
-    current_version=$(docker images $(dockerHubImageName) --format "{{.Tag}}" | grep -E "^v[0-9]+" | sort -r | head -n 1 | sed 's/v//')
-    
-    if [ -z "$current_version" ]; then
-        next_version=1
-    else
-        next_version=$((current_version + 1))
-    fi
-
-    echo "##vso[task.setvariable variable=next_version;]v$next_version"
-    echo "Next version: v$next_version"
-  displayName: 'Determine next version tag'
-
-
-# Step 6: Build Docker image with next version
+# Step 5: Build Docker image with Build.BuildId as tag
 - task: Docker@2
   displayName: 'Build Docker image'
   inputs:
     command: 'build'
     repository: '$(dockerHubImageName)'
-    Dockerfile: 'HelloWorld/Dockerfile'  # Ensure you have a Dockerfile in the repo root
+    Dockerfile: 'HelloWorld/Dockerfile'
     tags: |
-      $(next_version)
+      $(tag)  # Use Build.BuildId as the tag
 
-# Step 7: Push Docker image with next version
+# Step 6: Push Docker image with Build.BuildId as tag
 - task: Docker@2
   displayName: 'Push Docker image'
   inputs:
     command: 'push'
     repository: '$(dockerHubImageName)'
     tags: |
-      $(next_version)
+      $(tag)  # Use Build.BuildId as the tag
