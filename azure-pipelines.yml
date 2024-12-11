@@ -9,9 +9,7 @@ resources:
 - repo: self
 
 variables:
-  dockerHubImageName: 'sujayabu/myhelloworldimage'  # Replace with your Docker Hub image name
-  dockerHubUsername: 'sujayabu'                     # Replace with your Docker Hub username
-  dockerHubPassword: ''                             # Set in Azure DevOps as a secret variable
+- group: ImagePush
 
 steps:
 # Step 1: Checkout the code
