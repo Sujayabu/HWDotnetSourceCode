@@ -22,16 +22,19 @@ steps:
 # Step 2: Restore dependencies
 - script: |
     dotnet restore
+  workingDirectory: HelloWorld
   displayName: 'Restore dependencies'
 
 # Step 3: Build the .NET application
 - script: |
     dotnet build --configuration Release
   displayName: 'Build application'
+  workingDirectory: HelloWorld
 
 # Step 4: Publish the build output
 - script: |
     dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)/publish
+  workingDirectory: HelloWorld
   displayName: 'Publish application'
 
 # Step 5: Get the next version tag
@@ -48,7 +51,7 @@ steps:
   inputs:
     command: 'build'
     repository: '$(dockerHubImageName)'
-    Dockerfile: 'Dockerfile'  # Ensure you have a Dockerfile in the repo root
+    Dockerfile: 'HelloWorld/Dockerfile'  # Ensure you have a Dockerfile in the repo root
     tags: |
       $(nextVersion)
 
