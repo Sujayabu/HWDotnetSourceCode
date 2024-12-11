@@ -61,7 +61,7 @@ steps:
     repository: '$(dockerHubImageName)'
     Dockerfile: 'HelloWorld/Dockerfile'  # Ensure you have a Dockerfile in the repo root
     tags: |
-      $(nextVersion)
+      $(next_version)
 
 # Step 7: Push Docker image with next version
 - task: Docker@2
@@ -70,4 +70,4 @@ steps:
     command: 'push'
     repository: '$(dockerHubImageName)'
     tags: |
-      $(nextVersion)
+      $(next_version)
