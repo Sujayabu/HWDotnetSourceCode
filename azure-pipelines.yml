@@ -48,7 +48,7 @@ steps:
         next_version=$((current_version + 1))
     fi
 
-    echo "##vso[task.setvariable variable=nextVersion;]v$next_version"
+    echo "##vso[task.setvariable variable=next_version;]v$next_version"
     echo "Next version: v$next_version"
   displayName: 'Determine next version tag'
 
